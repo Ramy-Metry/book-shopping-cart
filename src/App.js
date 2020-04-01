@@ -12,23 +12,28 @@ import ProductContext from "./contexts/ProductContext"
 function App() {
 
 	const [products] = useState(data);
-	const [cart, setCart] = useState([]);
+	const [cart, setCart] = useState({});
 
-	const addItem = item => {
+	const addItem = itemId => {
 		// add the given item to the cart
-		setCart([...cart, item])
+		// setCart([...cart, item])
+		const newCart = {...cart, [itemId]: cart[itemId] ? cart[itemId] + 1 : 1 }
+		setCart(newCart)
 	};
 
 	const removeItem = id => {
-		const deleteCartItem = cart.filter(item => item.id !== id);
-		setCart([...deleteCartItem]);
+		if (!cart[id]) {
+			return 
+		}
+		const newCart = {...cart, [id]: cart[id] - 1}
+		setCart(newCart);
    };
 
 	return (
 
 		<ProductContext.Provider value={{products, addItem, cart, removeItem}}>
 		<div className="App">
-			<Navigation cart={cart} />
+			<Navigation cart={cart} products={products} />
 
 			{/* Routes */}
 			<Route
@@ -44,7 +49,7 @@ function App() {
 
 			<Route
 				path="/cart"
-				render={() => <ShoppingCart cart={cart}  removeItem={removeItem}/>}
+				render={() => <ShoppingCart products={products} cart={cart}  removeItem={removeItem}/>}
 			/>
 		</div>
 	</ProductContext.Provider>

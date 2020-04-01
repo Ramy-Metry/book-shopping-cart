@@ -2,8 +2,8 @@ import React, {useContext} from 'react';
 import ProductContext from "../contexts/ProductContext"
 
 
-const Item =({...item}) => {
-	const {removeItem} =useContext(ProductContext)
+const Item =({removeItem,...item}) => {
+	// const {removeItem} =useContext(ProductContext,)
 	return (
 		<div className="shopping-cart_item">
 			<img src={item.image} alt={`${item.title} book`} />
